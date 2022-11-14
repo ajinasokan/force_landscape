@@ -9,23 +9,26 @@ public class SwiftForceLandscapePlugin: NSObject, FlutterPlugin {
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        let force = call.arguments as! Bool;
+        var deviceOrientation : UIInterfaceOrientationMask = UIInterfaceOrientationMask.all;
         
-        if #available(iOS 16.0, *) {
-            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            if force {
-                windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .landscapeLeft))
-            } else {
-                windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
+        if call.method == "forceLandscape" {
+            deviceOrientation = UIInterfaceOrientationMask.landscapeLeft;
+       } else if call.method == "forcePortrait" {
+           deviceOrientation = UIInterfaceOrientationMask.portrait;
+       }
+
+        if  #available(iOS 16.0, *)  {
+            // UIApplication.shared.keyWindow?.rootViewController?.setNeedsUpdateOfSupportedInterfaceOrientations();
+            for  scene in UIApplication.shared.connectedScenes {
+                if let windowScene = scene as? UIWindowScene? {
+                    let pref = UIWindowScene.GeometryPreferences.iOS.init();
+                    pref.interfaceOrientations = deviceOrientation;
+                    windowScene?.requestGeometryUpdate(pref);
+                }
             }
-        } else {
-            if force {
-                let value = UIInterfaceOrientation.landscapeLeft.rawValue
-                UIDevice.current.setValue(value, forKey: "orientation")
-            } else {
-                let value = UIInterfaceOrientation.portrait.rawValue
-                UIDevice.current.setValue(value, forKey: "orientation")
-            }
+        }  else {
+            UIDevice.current.setValue(deviceOrientation.rawValue, forKey: "orientation");
+            UIViewController.attemptRotationToDeviceOrientation();
         }
         
         result(nil)

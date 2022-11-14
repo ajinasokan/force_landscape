@@ -23,7 +23,15 @@ abstract class ForceLandscapePlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<void> forceLandscape(bool force) {
+  Future<void> forceLandscape() {
+    throw UnimplementedError('platformVersion() has not been implemented.');
+  }
+
+  Future<void> forcePortrait() {
+    throw UnimplementedError('platformVersion() has not been implemented.');
+  }
+
+  Future<void> allowPortraitOrLandscape() {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 }

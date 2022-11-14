@@ -17,11 +17,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _forceLandscapePlugin = ForceLandscape();
-  bool force = false;
 
   Future<void> initPlatformState() async {
-    force = !force;
-    await _forceLandscapePlugin.forceLandscape(force);
+    await _forceLandscapePlugin.forceLandscape();
     setState(() {});
   }
 
@@ -33,9 +31,27 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: ElevatedButton(
-            onPressed: initPlatformState,
-            child: Text('${force ? "Disable" : "Enable"} Landscape'),
+          child: Column(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  _forceLandscapePlugin.forceLandscape();
+                },
+                child: const Text('forceLandscape'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _forceLandscapePlugin.forcePortrait();
+                },
+                child: const Text('forcePortrait'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _forceLandscapePlugin.allowPortraitOrLandscape();
+                },
+                child: const Text('allowPortraitOrLandscape'),
+              ),
+            ],
           ),
         ),
       ),

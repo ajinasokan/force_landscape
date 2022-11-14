@@ -10,7 +10,17 @@ class MethodChannelForceLandscape extends ForceLandscapePlatform {
   final methodChannel = const MethodChannel('force_landscape');
 
   @override
-  Future<void> forceLandscape(bool force) async {
-    await methodChannel.invokeMethod<void>('forceLandscape', force);
+  Future<void> forceLandscape() async {
+    await methodChannel.invokeMethod<void>('forceLandscape');
+  }
+
+  @override
+  Future<void> forcePortrait() async {
+    await methodChannel.invokeMethod<void>('forcePortrait');
+  }
+
+  @override
+  Future<void> allowPortraitOrLandscape() async {
+    await methodChannel.invokeMethod<void>('allowPortraitOrLandscape');
   }
 }
